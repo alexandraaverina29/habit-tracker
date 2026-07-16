@@ -65,10 +65,14 @@
     return streak;
   }
 
+  var lastToggle = null;
+
   function toggleHabit(habitId) {
     var today = todayKey();
     if (!state.history[today]) state.history[today] = {};
-    state.history[today][habitId] = !state.history[today][habitId];
+    var nowDone = !state.history[today][habitId];
+    state.history[today][habitId] = nowDone;
+    lastToggle = { id: habitId, action: nowDone ? "check" : "uncheck" };
     saveData();
     render();
   }
@@ -109,6 +113,10 @@
 
     document.getElementById("dateLabel").textContent = formatDateLabel();
 
+    var toggledId = lastToggle ? lastToggle.id : null;
+    var toggledAction = lastToggle ? lastToggle.action : null;
+    lastToggle = null;
+
     var listEl = document.getElementById("habitList");
     listEl.innerHTML = "";
 
@@ -128,6 +136,9 @@
 
       var item = document.createElement("li");
       item.className = "habit-item" + (done ? " done" : "");
+      if (habit.id === toggledId) {
+        item.className += toggledAction === "check" ? " anim-check" : " anim-uncheck";
+      }
 
       var check = document.createElement("span");
       check.className = "habit-check";
