@@ -1,5 +1,5 @@
 :root {
-  --bg: #efeeea;
+  --bg: #2f8f5c;
   --surface: #ffffff;
   --surface-muted: #f5f4f1;
   --text: #1c1c1a;
@@ -326,7 +326,7 @@ body {
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #131211;
+    --bg: #17402a;
     --surface: #1c1b19;
     --surface-muted: #252420;
     --text: #f2f1ed;
