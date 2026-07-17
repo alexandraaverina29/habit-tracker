@@ -213,6 +213,31 @@
     return total;
   }
 
+  function budgetStreak() {
+    if (!state.budgetSetDate) return 0;
+    var streak = 0;
+    var cursor = shiftDate(todayKey(), -1);
+    while (cursor >= state.budgetSetDate) {
+      var eff = effectiveBudget(cursor);
+      var spent = dayTotal(cursor);
+      if (spent <= eff) {
+        streak++;
+        cursor = shiftDate(cursor, -1);
+      } else {
+        break;
+      }
+    }
+    return streak;
+  }
+
+  function pluralDays(n) {
+    var mod10 = n % 10;
+    var mod100 = n % 100;
+    if (mod10 === 1 && mod100 !== 11) return "день";
+    if (mod10 >= 2 && mod10 <= 4 && (mod100 < 10 || mod100 >= 20)) return "дня";
+    return "дней";
+  }
+
   function setBudget(amount) {
     if (!amount || amount <= 0) return;
     state.dailyBudget = amount;
@@ -242,16 +267,27 @@
     var greetingText = document.getElementById("greetingText");
     var editNameBtn = document.getElementById("editNameBtn");
     var nameForm = document.getElementById("nameForm");
+    var streakEl = document.getElementById("streakText");
 
     if (state.userName) {
       greetingText.textContent = getTimeGreeting() + ", " + state.userName + "!";
       greetingText.classList.remove("hidden");
       editNameBtn.classList.remove("hidden");
       nameForm.classList.add("hidden");
+
+      var streak = budgetStreak();
+      if (streak > 0) {
+        var emoji = streak <= 5 ? "👍" : streak <= 10 ? "🔥" : "🎆";
+        streakEl.textContent = emoji + " " + streak + " " + pluralDays(streak) + " подряд в бюджете";
+        streakEl.classList.remove("hidden");
+      } else {
+        streakEl.classList.add("hidden");
+      }
     } else {
       greetingText.classList.add("hidden");
       editNameBtn.classList.add("hidden");
       nameForm.classList.remove("hidden");
+      streakEl.classList.add("hidden");
     }
   }
 
