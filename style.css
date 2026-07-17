@@ -35,6 +35,7 @@ body {
 }
 
 .app {
+  position: relative;
   width: 100%;
   max-width: 420px;
   background: var(--surface);
@@ -83,14 +84,29 @@ body {
 }
 
 .savings-badge {
-  margin-top: 10px;
-  display: inline-block;
-  font-size: 13px;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  text-align: right;
+  background: var(--green-bg);
+  padding: 6px 10px;
+  border-radius: 12px;
+  line-height: 1.25;
+}
+
+.savings-amount {
+  font-size: 14px;
   font-weight: 700;
   color: var(--green);
-  background: var(--green-bg);
-  padding: 6px 12px;
-  border-radius: 999px;
+}
+
+.savings-label {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--green);
+  opacity: 0.8;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
 }
 
 /* Budget setup */

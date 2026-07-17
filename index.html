@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <title>Бюджет дня</title>
-<link rel="stylesheet" href="style.css?v=7">
+<link rel="stylesheet" href="style.css?v=8">
 </head>
 <body>
 
@@ -17,12 +17,16 @@
 <main class="app">
   <p class="motivation">Маленькие шаги создают <span class="motivation-highlight">большие перемены</span></p>
 
+  <div id="savingsBadge" class="savings-badge hidden">
+    <div id="savingsAmount" class="savings-amount"></div>
+    <div class="savings-label">сэкономлено</div>
+  </div>
+
   <header class="app-header">
     <div class="app-title">Бюджет дня</div>
     <div class="header-meta">
       <span id="dateLabel"></span>
     </div>
-    <div id="savingsBadge" class="savings-badge hidden"></div>
   </header>
 
   <section id="budgetSetup" class="budget-setup">
@@ -71,6 +75,6 @@
   </section>
 </main>
 
-<script src="app.js?v=7"></script>
+<script src="app.js?v=8"></script>
 </body>
 </html>

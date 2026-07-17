@@ -483,7 +483,7 @@
     var savings = monthlySavings(now.getFullYear(), now.getMonth());
     var badge = document.getElementById("savingsBadge");
     if (savings > 0) {
-      badge.textContent = "+" + formatMoney(savings) + " сэкономлено в этом месяце";
+      document.getElementById("savingsAmount").textContent = "+" + formatMoney(savings);
       badge.classList.remove("hidden");
     } else {
       badge.classList.add("hidden");
