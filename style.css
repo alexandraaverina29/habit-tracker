@@ -274,8 +274,37 @@ body {
 
 .cat-expense-form {
   display: flex;
-  gap: 8px;
+  flex-direction: column;
+  gap: 10px;
   padding: 0 16px 14px;
+}
+
+.quick-amounts {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+}
+
+.quick-amount-btn {
+  padding: 9px 4px;
+  border: 1.5px solid var(--qa-color, var(--border));
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--qa-color, var(--text));
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.quick-amount-btn:hover,
+.quick-amount-btn:active {
+  background: var(--qa-color, var(--border));
+  color: #fff;
+}
+
+.cat-expense-input-row {
+  display: flex;
+  gap: 8px;
 }
 
 .cat-expense-input {

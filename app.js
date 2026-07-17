@@ -4,13 +4,59 @@
   var STORAGE_KEY = "budget-tracker-data";
 
   var DEFAULT_CATEGORIES = [
-    { id: "transport", name: "Транспорт", color: "#4f8cf7" },
-    { id: "coffee", name: "Кофе", color: "#8a5a34" },
-    { id: "food", name: "Еда", color: "#f2994a" },
-    { id: "shop", name: "Магазин", color: "#9b6bde" }
+    { id: "transport", name: "Транспорт", color: "#4f8cf7", quickAmounts: [100, 200, 1000, 2000] },
+    { id: "coffee", name: "Кофе", color: "#8a5a34", quickAmounts: [500, 700, 1000, 1500] },
+    { id: "food", name: "Еда", color: "#f2994a", quickAmounts: [1000, 2000, 3000, 5000] },
+    { id: "shop", name: "Магазин", color: "#9b6bde", quickAmounts: [1000, 2000, 5000, 10000] }
   ];
 
+  var DEFAULT_QUICK_AMOUNTS = [500, 1000, 2000, 5000];
+
   var EXTRA_COLORS = ["#2fb4a3", "#e0588b", "#6b7280", "#c9a227", "#5b7fd6"];
+
+  function normalizeCategories(categories, expenses) {
+    var remaining = categories.slice();
+    var ordered = [];
+
+    DEFAULT_CATEGORIES.forEach(function (defCat) {
+      var idx = -1;
+      for (var i = 0; i < remaining.length; i++) {
+        var c = remaining[i];
+        if (c.id === defCat.id || c.name.trim().toLowerCase() === defCat.name.toLowerCase()) {
+          idx = i;
+          break;
+        }
+      }
+      if (idx !== -1) {
+        var existing = remaining[idx];
+        remaining.splice(idx, 1);
+        if (existing.id !== defCat.id) {
+          remapExpenseCategoryId(expenses, existing.id, defCat.id);
+        }
+        ordered.push(defCat);
+      } else {
+        ordered.push(defCat);
+      }
+    });
+
+    remaining.forEach(function (c) {
+      if (!c.quickAmounts) c.quickAmounts = DEFAULT_QUICK_AMOUNTS;
+      ordered.push(c);
+    });
+
+    return ordered;
+  }
+
+  function remapExpenseCategoryId(expenses, oldId, newId) {
+    if (oldId === newId) return;
+    Object.keys(expenses).forEach(function (dateKey) {
+      var day = expenses[dateKey];
+      if (day && day[oldId] !== undefined) {
+        day[newId] = (day[newId] || 0) + day[oldId];
+        delete day[oldId];
+      }
+    });
+  }
 
   var MONTHS_FULL = [
     "январь", "февраль", "март", "апрель", "май", "июнь",
@@ -47,6 +93,7 @@
       if (!parsed.expenses) parsed.expenses = {};
       if (parsed.dailyBudget === undefined) parsed.dailyBudget = null;
       if (parsed.budgetSetDate === undefined) parsed.budgetSetDate = null;
+      parsed.categories = normalizeCategories(parsed.categories, parsed.expenses);
       return parsed;
     } catch (e) {
       return { dailyBudget: null, budgetSetDate: null, categories: DEFAULT_CATEGORIES.slice(), expenses: {} };
@@ -136,7 +183,7 @@
     var trimmed = name.trim();
     if (!trimmed) return;
     var color = EXTRA_COLORS[state.categories.length % EXTRA_COLORS.length];
-    state.categories.push({ id: uid(), name: trimmed, color: color });
+    state.categories.push({ id: uid(), name: trimmed, color: color, quickAmounts: DEFAULT_QUICK_AMOUNTS });
     saveData();
     render();
   }
@@ -266,12 +313,30 @@
       var form = document.createElement("form");
       form.className = "cat-expense-form hidden";
 
+      var quickWrap = document.createElement("div");
+      quickWrap.className = "quick-amounts";
+      var quickAmounts = cat.quickAmounts || DEFAULT_QUICK_AMOUNTS;
+      quickAmounts.forEach(function (amount) {
+        var quickBtn = document.createElement("button");
+        quickBtn.type = "button";
+        quickBtn.className = "quick-amount-btn";
+        quickBtn.textContent = formatNumber(amount);
+        quickBtn.style.setProperty("--qa-color", cat.color);
+        quickBtn.addEventListener("click", function () {
+          addExpense(cat.id, amount);
+        });
+        quickWrap.appendChild(quickBtn);
+      });
+
+      var inputRow = document.createElement("div");
+      inputRow.className = "cat-expense-input-row";
+
       var input = document.createElement("input");
       input.type = "number";
       input.min = "0";
       input.step = "1";
       input.inputMode = "decimal";
-      input.placeholder = "Сумма";
+      input.placeholder = "Своя сумма";
       input.className = "cat-expense-input";
 
       var submitBtn = document.createElement("button");
@@ -279,8 +344,11 @@
       submitBtn.className = "cat-expense-submit";
       submitBtn.textContent = "Добавить";
 
-      form.appendChild(input);
-      form.appendChild(submitBtn);
+      inputRow.appendChild(input);
+      inputRow.appendChild(submitBtn);
+
+      form.appendChild(quickWrap);
+      form.appendChild(inputRow);
 
       function closeForm() {
         form.classList.add("hidden");
