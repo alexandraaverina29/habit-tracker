@@ -618,11 +618,11 @@
     var badgeLabel = document.getElementById("savingsLabel");
     if (net > 0) {
       document.getElementById("savingsAmount").textContent = "+" + formatMoney(net);
-      badgeLabel.textContent = "сэкономлено за месяц";
+      badgeLabel.textContent = "💚 сэкономлено за месяц";
       badge.classList.remove("hidden", "over");
     } else if (net < 0) {
       document.getElementById("savingsAmount").textContent = "-" + formatMoney(Math.abs(net));
-      badgeLabel.textContent = "перерасход за месяц";
+      badgeLabel.textContent = "💔 перерасход за месяц";
       badge.classList.remove("hidden");
       badge.classList.add("over");
     } else {
