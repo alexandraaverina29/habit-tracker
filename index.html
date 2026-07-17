@@ -4,9 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <title>Бюджет дня</title>
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css?v=3">
 </head>
 <body>
+
+<noscript>
+  <div style="max-width:420px;margin:40px auto;padding:20px;text-align:center;font-family:sans-serif;">
+    Для работы этого приложения нужен включённый JavaScript.
+  </div>
+</noscript>
 
 <main class="app">
   <p class="motivation">Маленькие шаги создают <span class="motivation-highlight">большие перемены</span></p>
@@ -19,7 +25,7 @@
     <div id="savingsBadge" class="savings-badge hidden"></div>
   </header>
 
-  <section id="budgetSetup" class="budget-setup hidden">
+  <section id="budgetSetup" class="budget-setup">
     <p class="setup-label">Укажите дневной бюджет, чтобы начать</p>
     <form id="setupForm" class="setup-form">
       <input id="setupInput" class="setup-input" type="number" min="1" step="1" inputmode="numeric" placeholder="Например, 1000">
@@ -65,6 +71,6 @@
   </section>
 </main>
 
-<script src="app.js"></script>
+<script src="app.js?v=3"></script>
 </body>
 </html>
