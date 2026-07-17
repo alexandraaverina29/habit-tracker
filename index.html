@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <title>Бюджет дня</title>
-<link rel="stylesheet" href="style.css?v=10">
+<link rel="stylesheet" href="style.css?v=11">
 </head>
 <body>
 
@@ -16,11 +16,6 @@
 
 <main class="app">
   <p class="motivation">Маленькие шаги создают <span class="motivation-highlight">большие перемены</span></p>
-
-  <div id="savingsBadge" class="savings-badge hidden">
-    <div id="savingsAmount" class="savings-amount"></div>
-    <div class="savings-label">сэкономлено</div>
-  </div>
 
   <header class="app-header">
     <div class="app-title">Бюджет дня</div>
@@ -38,11 +33,18 @@
   </section>
 
   <section id="mainView" class="main-view hidden">
-    <div class="ring-wrap">
-      <svg id="ringSvg" class="ring-svg" viewBox="0 0 120 120"></svg>
-      <div class="ring-center">
-        <div id="ringPercent" class="ring-percent">0%</div>
-        <div id="ringSub" class="ring-sub"></div>
+    <div class="ring-section">
+      <div class="ring-wrap">
+        <svg id="ringSvg" class="ring-svg" viewBox="0 0 120 120"></svg>
+        <div class="ring-center">
+          <div id="ringPercent" class="ring-percent">0%</div>
+          <div id="ringSub" class="ring-sub"></div>
+        </div>
+      </div>
+
+      <div id="savingsBadge" class="savings-badge hidden">
+        <div id="savingsAmount" class="savings-amount"></div>
+        <div class="savings-label">сэкономлено<br>за месяц</div>
       </div>
     </div>
 
@@ -75,6 +77,6 @@
   </section>
 </main>
 
-<script src="app.js?v=10"></script>
+<script src="app.js?v=11"></script>
 </body>
 </html>

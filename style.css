@@ -84,9 +84,8 @@ body {
 }
 
 .savings-badge {
-  position: absolute;
-  top: 20px;
-  right: 20px;
+  flex: 0 0 auto;
+  margin-top: 8px;
   text-align: right;
   background: var(--green-bg);
   padding: 6px 10px;
@@ -145,11 +144,19 @@ body {
 
 /* Ring */
 
+.ring-section {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 10px;
+  margin: 4px 0 20px;
+}
+
 .ring-wrap {
   position: relative;
   width: 190px;
   height: 190px;
-  margin: 4px auto 20px;
+  flex: 0 0 auto;
 }
 
 .ring-svg {
