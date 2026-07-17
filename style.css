@@ -46,6 +46,56 @@ body {
   flex-direction: column;
 }
 
+.greeting-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.greeting-text {
+  font-size: 16px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.edit-name-btn {
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 13px;
+  padding: 2px 4px;
+  opacity: 0.6;
+}
+
+.edit-name-btn:hover {
+  opacity: 1;
+}
+
+.name-form {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.name-input {
+  flex: 1 1 auto;
+  padding: 13px 14px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  font-size: 16px;
+  font-family: inherit;
+  background: var(--surface);
+  color: var(--text);
+}
+
+.name-input:focus {
+  outline: none;
+  border-color: var(--yellow);
+}
+
 .motivation {
   margin: 0 0 18px;
   text-align: center;

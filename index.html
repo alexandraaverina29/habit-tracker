@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <title>Бюджет дня</title>
-<link rel="stylesheet" href="style.css?v=18">
+<link rel="stylesheet" href="style.css?v=19">
 </head>
 <body>
 
@@ -15,6 +15,15 @@
 </noscript>
 
 <main class="app">
+  <div class="greeting-section">
+    <span id="greetingText" class="greeting-text hidden"></span>
+    <button id="editNameBtn" class="edit-name-btn hidden" type="button" aria-label="Изменить имя">✎</button>
+  </div>
+  <form id="nameForm" class="name-form hidden">
+    <input id="nameInput" class="name-input" type="text" placeholder="Как вас зовут?" maxlength="30" autocomplete="off">
+    <button type="submit" class="save-btn">Сохранить</button>
+  </form>
+
   <p class="motivation">Маленькие шаги создают <span class="motivation-highlight">большие перемены</span></p>
 
   <header class="app-header">
@@ -94,6 +103,6 @@
   </div>
 </div>
 
-<script src="app.js?v=18"></script>
+<script src="app.js?v=19"></script>
 </body>
 </html>

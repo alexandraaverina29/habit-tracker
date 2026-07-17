@@ -131,6 +131,7 @@
     if (!parsed.expenses) parsed.expenses = {};
     if (parsed.dailyBudget === undefined) parsed.dailyBudget = null;
     if (parsed.budgetSetDate === undefined) parsed.budgetSetDate = null;
+    if (parsed.userName === undefined) parsed.userName = null;
     parsed.categories = normalizeCategories(parsed.categories, parsed.expenses);
 
     if (!parsed._julyBudgetApplied) {
@@ -219,6 +220,39 @@
     effectiveCache = {};
     saveData();
     render();
+  }
+
+  function setUserName(name) {
+    var trimmed = (name || "").trim();
+    if (!trimmed) return;
+    state.userName = trimmed;
+    saveData();
+    render();
+  }
+
+  function getTimeGreeting() {
+    var hour = new Date().getHours();
+    if (hour >= 5 && hour <= 10) return "Доброе утро";
+    if (hour >= 11 && hour <= 17) return "Добрый день";
+    if (hour >= 18 && hour <= 22) return "Добрый вечер";
+    return "Доброй ночи";
+  }
+
+  function renderGreeting() {
+    var greetingText = document.getElementById("greetingText");
+    var editNameBtn = document.getElementById("editNameBtn");
+    var nameForm = document.getElementById("nameForm");
+
+    if (state.userName) {
+      greetingText.textContent = getTimeGreeting() + ", " + state.userName + "!";
+      greetingText.classList.remove("hidden");
+      editNameBtn.classList.remove("hidden");
+      nameForm.classList.add("hidden");
+    } else {
+      greetingText.classList.add("hidden");
+      editNameBtn.classList.add("hidden");
+      nameForm.classList.remove("hidden");
+    }
   }
 
   var lastAddedCategoryId = null;
@@ -622,6 +656,7 @@
   function render() {
     effectiveCache = {};
     document.getElementById("dateLabel").textContent = formatDateLabel();
+    renderGreeting();
 
     var setupEl = document.getElementById("budgetSetup");
     var mainEl = document.getElementById("mainView");
@@ -683,6 +718,20 @@
       if (val > 0) {
         setBudget(val);
       }
+    });
+
+    var nameForm = document.getElementById("nameForm");
+    var nameInput = document.getElementById("nameInput");
+    nameForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+      setUserName(nameInput.value);
+      nameInput.value = "";
+    });
+
+    document.getElementById("editNameBtn").addEventListener("click", function () {
+      var val = window.prompt("Ваше имя", state.userName || "");
+      if (val === null) return;
+      setUserName(val);
     });
 
     var addBtn = document.getElementById("addBtn");
