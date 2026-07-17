@@ -87,6 +87,33 @@
   var JULY_2026_START = "2026-07-01";
   var JULY_2026_BUDGET = 10000;
 
+  var JULY_DAY_TOTALS = {
+    1: 8500, 2: 12300, 3: 7700, 4: 6200, 5: 14000, 6: 5000, 7: 11500, 8: 8000,
+    9: 9800, 10: 13200, 11: 6800, 12: 9000, 13: 15600, 14: 4000, 15: 10800, 16: 7200
+  };
+
+  var JULY_WEIGHT_PATTERNS = [
+    [0.30, 0.20, 0.10, 0.25, 0.15],
+    [0.15, 0.35, 0.15, 0.20, 0.15],
+    [0.40, 0.10, 0.15, 0.15, 0.20],
+    [0.20, 0.15, 0.25, 0.10, 0.30]
+  ];
+
+  function splitJulyAmount(total, patternIndex) {
+    var ids = ["halyk_transfer", "transport", "coffee", "food", "shop"];
+    var weights = JULY_WEIGHT_PATTERNS[patternIndex % JULY_WEIGHT_PATTERNS.length];
+    var parts = weights.map(function (w) {
+      return Math.round(total * w);
+    });
+    var sum = parts.reduce(function (a, b) { return a + b; }, 0);
+    parts[0] += total - sum;
+    var obj = {};
+    ids.forEach(function (id, i) {
+      if (parts[i] > 0) obj[id] = parts[i];
+    });
+    return obj;
+  }
+
   function loadData() {
     var raw = localStorage.getItem(STORAGE_KEY);
     var parsed;
@@ -112,6 +139,17 @@
         parsed.budgetSetDate = JULY_2026_START;
       }
       parsed._julyBudgetApplied = true;
+    }
+
+    if (!parsed._julyExpensesApplied) {
+      Object.keys(JULY_DAY_TOTALS).forEach(function (dayStr, idx) {
+        var day = parseInt(dayStr, 10);
+        var dateKey = "2026-07-" + pad(day);
+        if (!parsed.expenses[dateKey]) {
+          parsed.expenses[dateKey] = splitJulyAmount(JULY_DAY_TOTALS[day], idx);
+        }
+      });
+      parsed._julyExpensesApplied = true;
     }
 
     return parsed;
