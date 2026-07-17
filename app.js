@@ -610,6 +610,7 @@
     renderRing(spent, budget, pct);
 
     document.getElementById("budgetAmount").textContent = formatMoney(budget);
+    document.getElementById("spentTodayAmount").textContent = formatMoney(spent);
 
     var now = new Date();
     var net = monthlyNet(now.getFullYear(), now.getMonth());

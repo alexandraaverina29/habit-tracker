@@ -83,10 +83,17 @@ body {
   color: var(--text-muted);
 }
 
-.savings-badge {
+.ring-side {
   flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
   max-width: 130px;
   margin-top: 8px;
+}
+
+.savings-badge {
   text-align: right;
   background: var(--green-bg);
   padding: 6px 10px;
@@ -116,6 +123,28 @@ body {
 .savings-badge.over .savings-amount,
 .savings-badge.over .savings-label {
   color: var(--red);
+}
+
+.spent-today {
+  text-align: right;
+  background: var(--surface-muted);
+  padding: 6px 10px;
+  border-radius: 12px;
+  line-height: 1.25;
+}
+
+.spent-today-amount {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.spent-today-label {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
 }
 
 /* Budget setup */
