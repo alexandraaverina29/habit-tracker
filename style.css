@@ -530,6 +530,140 @@ body {
   box-shadow: inset 0 0 0 2px var(--yellow);
 }
 
+.cal-cell.clickable {
+  cursor: pointer;
+}
+
+.cal-cell.clickable:hover,
+.cal-cell.clickable:active {
+  filter: brightness(0.96);
+}
+
+/* Day detail modal */
+
+.day-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.day-modal.hidden {
+  display: none;
+}
+
+.day-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.day-modal-content {
+  position: relative;
+  width: 100%;
+  max-width: 360px;
+  max-height: 80vh;
+  overflow-y: auto;
+  background: var(--surface);
+  border-radius: 20px;
+  padding: 24px 20px 20px;
+}
+
+.day-modal-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: 50%;
+  background: var(--surface-muted);
+  color: var(--text-muted);
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.day-modal-date {
+  font-size: 17px;
+  font-weight: 700;
+  padding-right: 30px;
+  margin-bottom: 12px;
+}
+
+.day-modal-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding-bottom: 14px;
+  margin-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+.day-modal-spent {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.day-modal-spent.over {
+  color: var(--red);
+}
+
+.day-modal-budget {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.day-modal-diff {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--green);
+}
+
+.day-modal-diff.over {
+  color: var(--red);
+}
+
+.day-modal-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.day-modal-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: var(--cat-color, var(--surface-muted));
+}
+
+.day-modal-icon {
+  font-size: 18px;
+  line-height: 1;
+}
+
+.day-modal-name {
+  flex: 1 1 auto;
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.day-modal-amount {
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+}
+
 /* Animations */
 
 .anim-pop {

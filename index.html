@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <title>Бюджет дня</title>
-<link rel="stylesheet" href="style.css?v=11">
+<link rel="stylesheet" href="style.css?v=12">
 </head>
 <body>
 
@@ -77,6 +77,16 @@
   </section>
 </main>
 
-<script src="app.js?v=11"></script>
+<div id="dayModal" class="day-modal hidden">
+  <div id="dayModalBackdrop" class="day-modal-backdrop"></div>
+  <div class="day-modal-content">
+    <button id="dayModalClose" class="day-modal-close" type="button" aria-label="Закрыть">×</button>
+    <div id="dayModalDate" class="day-modal-date"></div>
+    <div id="dayModalSummary" class="day-modal-summary"></div>
+    <ul id="dayModalList" class="day-modal-list"></ul>
+  </div>
+</div>
+
+<script src="app.js?v=12"></script>
 </body>
 </html>

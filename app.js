@@ -479,7 +479,7 @@
     }
 
     for (var d = 1; d <= daysInMonth; d++) {
-      var dateKey = calendarViewYear + "-" + pad(calendarViewMonth + 1) + "-" + pad(d);
+      let dateKey = calendarViewYear + "-" + pad(calendarViewMonth + 1) + "-" + pad(d);
       var cell = document.createElement("div");
       cell.className = "cal-cell";
 
@@ -500,12 +500,92 @@
         amtEl.textContent = formatNumber(spent);
         cell.appendChild(amtEl);
         cell.classList.add(spent <= eff ? "cal-under" : "cal-over");
+        cell.classList.add("clickable");
+        cell.addEventListener("click", function () {
+          showDayDetail(dateKey);
+        });
       } else if (dateKey > today) {
         cell.classList.add("cal-future");
       }
 
       gridEl.appendChild(cell);
     }
+  }
+
+  function showDayDetail(dateKey) {
+    var spent = dayTotal(dateKey);
+    var eff = effectiveBudget(dateKey);
+    var over = spent > eff;
+
+    var d = new Date(dateKey + "T00:00:00");
+    document.getElementById("dayModalDate").textContent =
+      d.getDate() + " " + MONTHS_GEN[d.getMonth()] + " " + d.getFullYear();
+
+    var summaryEl = document.getElementById("dayModalSummary");
+    summaryEl.innerHTML = "";
+
+    var spentLine = document.createElement("div");
+    spentLine.className = "day-modal-spent" + (over ? " over" : "");
+    spentLine.textContent = "Потрачено: " + formatMoney(spent);
+
+    var budgetLine = document.createElement("div");
+    budgetLine.className = "day-modal-budget";
+    budgetLine.textContent = "Бюджет на день: " + formatMoney(eff);
+
+    var diffLine = document.createElement("div");
+    diffLine.className = "day-modal-diff" + (over ? " over" : "");
+    diffLine.textContent = over
+      ? "Превышено на " + formatMoney(spent - eff)
+      : "Осталось " + formatMoney(eff - spent);
+
+    summaryEl.appendChild(spentLine);
+    summaryEl.appendChild(budgetLine);
+    summaryEl.appendChild(diffLine);
+
+    var listEl = document.getElementById("dayModalList");
+    listEl.innerHTML = "";
+    var dayExpenses = state.expenses[dateKey] || {};
+    var hasAny = false;
+
+    state.categories.forEach(function (cat) {
+      var amt = dayExpenses[cat.id] || 0;
+      if (amt <= 0) return;
+      hasAny = true;
+
+      var li = document.createElement("li");
+      li.className = "day-modal-item";
+      li.style.setProperty("--cat-color", cat.color);
+
+      var icon = document.createElement("span");
+      icon.className = "day-modal-icon";
+      icon.textContent = cat.icon || DEFAULT_ICON;
+
+      var name = document.createElement("span");
+      name.className = "day-modal-name";
+      name.textContent = cat.name;
+
+      var amount = document.createElement("span");
+      amount.className = "day-modal-amount";
+      amount.textContent = formatMoney(amt);
+
+      li.appendChild(icon);
+      li.appendChild(name);
+      li.appendChild(amount);
+      listEl.appendChild(li);
+    });
+
+    if (!hasAny) {
+      var empty = document.createElement("li");
+      empty.className = "empty-state";
+      empty.textContent = "В этот день расходов не было.";
+      listEl.appendChild(empty);
+    }
+
+    document.getElementById("dayModal").classList.remove("hidden");
+  }
+
+  function hideDayDetail() {
+    document.getElementById("dayModal").classList.add("hidden");
   }
 
   function render() {
@@ -607,6 +687,12 @@
         calendarViewYear++;
       }
       renderCalendar();
+    });
+
+    document.getElementById("dayModalClose").addEventListener("click", hideDayDetail);
+    document.getElementById("dayModalBackdrop").addEventListener("click", hideDayDetail);
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") hideDayDetail();
     });
   });
 })();
