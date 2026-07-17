@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>Трекер привычек</title>
+<title>Бюджет дня</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -12,24 +12,57 @@
   <p class="motivation">Маленькие шаги создают <span class="motivation-highlight">большие перемены</span></p>
 
   <header class="app-header">
-    <div class="app-title">Привычки</div>
+    <div class="app-title">Бюджет дня</div>
     <div class="header-meta">
       <span id="dateLabel"></span>
-      <span class="dot">·</span>
-      <span id="progressCount">0 из 0</span>
     </div>
-    <div class="progress-bar"><div id="progressFill" class="progress-fill"></div></div>
+    <div id="savingsBadge" class="savings-badge hidden"></div>
   </header>
 
-  <ul id="habitList" class="habit-list"></ul>
-
-  <div class="add-habit">
-    <button id="addBtn" class="add-btn" type="button" aria-label="Добавить привычку">+ Добавить привычку</button>
-    <form id="addForm" class="add-form hidden">
-      <input id="addInput" class="add-input" type="text" placeholder="Название привычки" maxlength="40" autocomplete="off">
-      <button type="submit" class="save-btn">Сохранить</button>
+  <section id="budgetSetup" class="budget-setup hidden">
+    <p class="setup-label">Укажите дневной бюджет, чтобы начать</p>
+    <form id="setupForm" class="setup-form">
+      <input id="setupInput" class="setup-input" type="number" min="1" step="1" inputmode="numeric" placeholder="Например, 1000">
+      <button type="submit" class="save-btn">Установить</button>
     </form>
-  </div>
+  </section>
+
+  <section id="mainView" class="main-view hidden">
+    <div class="ring-wrap">
+      <svg id="ringSvg" class="ring-svg" viewBox="0 0 120 120"></svg>
+      <div class="ring-center">
+        <div id="ringPercent" class="ring-percent">0%</div>
+        <div id="ringSub" class="ring-sub"></div>
+      </div>
+    </div>
+
+    <div class="budget-line">
+      <span>Бюджет на сегодня: <b id="budgetAmount">0 ₽</b></span>
+      <button id="editBudgetBtn" class="edit-budget-btn" type="button" aria-label="Изменить бюджет">✎</button>
+    </div>
+
+    <ul id="categoryList" class="category-list"></ul>
+
+    <div class="add-item">
+      <button id="addBtn" class="add-btn" type="button" aria-label="Добавить категорию">+ Добавить категорию</button>
+      <form id="addForm" class="add-form hidden">
+        <input id="addInput" class="add-input" type="text" placeholder="Название категории" maxlength="24" autocomplete="off">
+        <button type="submit" class="save-btn">Сохранить</button>
+      </form>
+    </div>
+
+    <div class="calendar">
+      <div class="calendar-header">
+        <button id="calPrev" class="cal-nav" type="button" aria-label="Предыдущий месяц">‹</button>
+        <span id="calTitle" class="cal-title"></span>
+        <button id="calNext" class="cal-nav" type="button" aria-label="Следующий месяц">›</button>
+      </div>
+      <div class="calendar-weekdays">
+        <span>Пн</span><span>Вт</span><span>Ср</span><span>Чт</span><span>Пт</span><span>Сб</span><span>Вс</span>
+      </div>
+      <div id="calendarGrid" class="calendar-grid"></div>
+    </div>
+  </section>
 </main>
 
 <script src="app.js"></script>
