@@ -66,7 +66,7 @@
   }
 
   function formatMoney(n) {
-    return formatNumber(n) + " ₽";
+    return formatNumber(n) + " ₸";
   }
 
   function dayTotal(dateKey) {
@@ -452,7 +452,7 @@
     });
 
     document.getElementById("editBudgetBtn").addEventListener("click", function () {
-      var val = window.prompt("Дневной бюджет, ₽", state.dailyBudget || "");
+      var val = window.prompt("Дневной бюджет, ₸", state.dailyBudget || "");
       if (val === null) return;
       var num = parseFloat(val);
       if (num > 0) {
