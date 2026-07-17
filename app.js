@@ -7,7 +7,8 @@
     { id: "transport", name: "Транспорт", color: "#4f8cf7", quickAmounts: [100, 200, 1000, 2000] },
     { id: "coffee", name: "Кофе", color: "#8a5a34", quickAmounts: [500, 700, 1000, 1500] },
     { id: "food", name: "Еда", color: "#f2994a", quickAmounts: [1000, 2000, 3000, 5000] },
-    { id: "shop", name: "Магазин", color: "#9b6bde", quickAmounts: [1000, 2000, 5000, 10000] }
+    { id: "shop", name: "Магазин", color: "#9b6bde", quickAmounts: [1000, 2000, 5000, 10000] },
+    { id: "halyk_transfer", name: "Переводы по Halyk SuperApp", color: "#1e9e8f", quickAmounts: [2000, 5000, 10000, 20000] }
   ];
 
   var DEFAULT_QUICK_AMOUNTS = [500, 1000, 2000, 5000];
