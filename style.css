@@ -190,11 +190,19 @@ body {
 }
 
 .spent-today-label {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
   font-size: 10px;
   font-weight: 600;
   color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.02em;
+}
+
+.wallet-icon {
+  flex: 0 0 auto;
 }
 
 /* Budget setup */
