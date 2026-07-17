@@ -233,6 +233,19 @@
     render();
   }
 
+  function setExpense(catId, amount) {
+    var today = todayKey();
+    if (!state.expenses[today]) state.expenses[today] = {};
+    if (amount > 0) {
+      state.expenses[today][catId] = amount;
+    } else {
+      delete state.expenses[today][catId];
+    }
+    lastAddedCategoryId = catId;
+    saveData();
+    render();
+  }
+
   function addCategory(name) {
     var trimmed = name.trim();
     if (!trimmed) return;
@@ -363,6 +376,25 @@
       row.appendChild(icon);
       row.appendChild(name);
       row.appendChild(spentEl);
+
+      if (amt > 0) {
+        var editBtn = document.createElement("button");
+        editBtn.className = "cat-edit";
+        editBtn.type = "button";
+        editBtn.setAttribute("aria-label", "Исправить сумму");
+        editBtn.textContent = "✎";
+        editBtn.addEventListener("click", function (e) {
+          e.stopPropagation();
+          var val = window.prompt("Сумма по категории «" + cat.name + "» за сегодня, ₸", amt);
+          if (val === null) return;
+          var num = parseFloat(val);
+          if (!isNaN(num) && num >= 0) {
+            setExpense(cat.id, num);
+          }
+        });
+        row.appendChild(editBtn);
+      }
+
       row.appendChild(closeBtn);
 
       var form = document.createElement("form");
