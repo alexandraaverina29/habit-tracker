@@ -85,6 +85,7 @@ body {
 
 .savings-badge {
   flex: 0 0 auto;
+  max-width: 130px;
   margin-top: 8px;
   text-align: right;
   background: var(--green-bg);
@@ -106,6 +107,15 @@ body {
   opacity: 0.8;
   text-transform: uppercase;
   letter-spacing: 0.02em;
+}
+
+.savings-badge.over {
+  background: var(--red-bg);
+}
+
+.savings-badge.over .savings-amount,
+.savings-badge.over .savings-label {
+  color: var(--red);
 }
 
 /* Budget setup */

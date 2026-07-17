@@ -196,7 +196,7 @@
     return result;
   }
 
-  function monthlySavings(year, month) {
+  function monthlyNet(year, month) {
     if (!state.budgetSetDate) return 0;
     var total = 0;
     var today = todayKey();
@@ -207,8 +207,7 @@
       if (dateKey < state.budgetSetDate) continue;
       var eff = effectiveBudget(dateKey);
       var spent = dayTotal(dateKey);
-      var diff = eff - spent;
-      if (diff > 0) total += diff;
+      total += eff - spent;
     }
     return total;
   }
@@ -613,11 +612,18 @@
     document.getElementById("budgetAmount").textContent = formatMoney(budget);
 
     var now = new Date();
-    var savings = monthlySavings(now.getFullYear(), now.getMonth());
+    var net = monthlyNet(now.getFullYear(), now.getMonth());
     var badge = document.getElementById("savingsBadge");
-    if (savings > 0) {
-      document.getElementById("savingsAmount").textContent = "+" + formatMoney(savings);
+    var badgeLabel = document.getElementById("savingsLabel");
+    if (net > 0) {
+      document.getElementById("savingsAmount").textContent = "+" + formatMoney(net);
+      badgeLabel.textContent = "сэкономлено за месяц";
+      badge.classList.remove("hidden", "over");
+    } else if (net < 0) {
+      document.getElementById("savingsAmount").textContent = "-" + formatMoney(Math.abs(net));
+      badgeLabel.textContent = "перерасход за месяц";
       badge.classList.remove("hidden");
+      badge.classList.add("over");
     } else {
       badge.classList.add("hidden");
     }
