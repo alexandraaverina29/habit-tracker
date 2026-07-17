@@ -84,22 +84,37 @@
     return d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate());
   }
 
+  var JULY_2026_START = "2026-07-01";
+  var JULY_2026_BUDGET = 10000;
+
   function loadData() {
     var raw = localStorage.getItem(STORAGE_KEY);
+    var parsed;
     if (!raw) {
-      return { dailyBudget: null, budgetSetDate: null, categories: DEFAULT_CATEGORIES.slice(), expenses: {} };
+      parsed = { dailyBudget: null, budgetSetDate: null, categories: DEFAULT_CATEGORIES.slice(), expenses: {} };
+    } else {
+      try {
+        parsed = JSON.parse(raw);
+      } catch (e) {
+        parsed = { dailyBudget: null, budgetSetDate: null, categories: DEFAULT_CATEGORIES.slice(), expenses: {} };
+      }
     }
-    try {
-      var parsed = JSON.parse(raw);
-      if (!parsed.categories) parsed.categories = DEFAULT_CATEGORIES.slice();
-      if (!parsed.expenses) parsed.expenses = {};
-      if (parsed.dailyBudget === undefined) parsed.dailyBudget = null;
-      if (parsed.budgetSetDate === undefined) parsed.budgetSetDate = null;
-      parsed.categories = normalizeCategories(parsed.categories, parsed.expenses);
-      return parsed;
-    } catch (e) {
-      return { dailyBudget: null, budgetSetDate: null, categories: DEFAULT_CATEGORIES.slice(), expenses: {} };
+
+    if (!parsed.categories) parsed.categories = DEFAULT_CATEGORIES.slice();
+    if (!parsed.expenses) parsed.expenses = {};
+    if (parsed.dailyBudget === undefined) parsed.dailyBudget = null;
+    if (parsed.budgetSetDate === undefined) parsed.budgetSetDate = null;
+    parsed.categories = normalizeCategories(parsed.categories, parsed.expenses);
+
+    if (!parsed._julyBudgetApplied) {
+      if (!parsed.dailyBudget || (parsed.budgetSetDate && parsed.budgetSetDate > JULY_2026_START)) {
+        parsed.dailyBudget = JULY_2026_BUDGET;
+        parsed.budgetSetDate = JULY_2026_START;
+      }
+      parsed._julyBudgetApplied = true;
     }
+
+    return parsed;
   }
 
   function saveData() {
