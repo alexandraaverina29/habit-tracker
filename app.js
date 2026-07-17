@@ -625,7 +625,9 @@
       badge.classList.remove("hidden");
       badge.classList.add("over");
     } else {
-      badge.classList.add("hidden");
+      document.getElementById("savingsAmount").textContent = formatMoney(0);
+      badgeLabel.textContent = "Вы в бюджете";
+      badge.classList.remove("hidden", "over");
     }
 
     renderCategories(today);
