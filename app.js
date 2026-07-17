@@ -4,14 +4,15 @@
   var STORAGE_KEY = "budget-tracker-data";
 
   var DEFAULT_CATEGORIES = [
-    { id: "transport", name: "Транспорт", color: "#4f8cf7", quickAmounts: [100, 200, 1000, 2000] },
-    { id: "coffee", name: "Кофе", color: "#8a5a34", quickAmounts: [500, 700, 1000, 1500] },
-    { id: "food", name: "Еда", color: "#f2994a", quickAmounts: [1000, 2000, 3000, 5000] },
-    { id: "shop", name: "Магазин", color: "#9b6bde", quickAmounts: [1000, 2000, 5000, 10000] },
-    { id: "halyk_transfer", name: "Переводы по Halyk SuperApp", color: "#1e9e8f", quickAmounts: [2000, 5000, 10000, 20000] }
+    { id: "halyk_transfer", name: "Переводы по Halyk SuperApp", color: "#1e9e8f", icon: "💳", quickAmounts: [2000, 5000, 10000, 20000] },
+    { id: "transport", name: "Транспорт", color: "#4f8cf7", icon: "🚗", quickAmounts: [100, 200, 1000, 2000] },
+    { id: "coffee", name: "Кофе", color: "#8a5a34", icon: "☕", quickAmounts: [500, 700, 1000, 1500] },
+    { id: "food", name: "Еда", color: "#f2994a", icon: "🍽️", quickAmounts: [1000, 2000, 3000, 5000] },
+    { id: "shop", name: "Магазин", color: "#9b6bde", icon: "🛍️", quickAmounts: [1000, 2000, 5000, 10000] }
   ];
 
   var DEFAULT_QUICK_AMOUNTS = [500, 1000, 2000, 5000];
+  var DEFAULT_ICON = "🏷️";
 
   var EXTRA_COLORS = ["#2fb4a3", "#e0588b", "#6b7280", "#c9a227", "#5b7fd6"];
 
@@ -184,7 +185,7 @@
     var trimmed = name.trim();
     if (!trimmed) return;
     var color = EXTRA_COLORS[state.categories.length % EXTRA_COLORS.length];
-    state.categories.push({ id: uid(), name: trimmed, color: color, quickAmounts: DEFAULT_QUICK_AMOUNTS });
+    state.categories.push({ id: uid(), name: trimmed, color: color, icon: DEFAULT_ICON, quickAmounts: DEFAULT_QUICK_AMOUNTS });
     saveData();
     render();
   }
@@ -287,10 +288,11 @@
 
       var row = document.createElement("div");
       row.className = "category-row";
+      row.style.setProperty("--cat-color", cat.color);
 
-      var dot = document.createElement("span");
-      dot.className = "cat-dot";
-      dot.style.background = cat.color;
+      var icon = document.createElement("span");
+      icon.className = "cat-icon";
+      icon.textContent = cat.icon || DEFAULT_ICON;
 
       var name = document.createElement("span");
       name.className = "cat-name";
@@ -306,7 +308,7 @@
       closeBtn.setAttribute("aria-label", "Закрыть");
       closeBtn.textContent = "×";
 
-      row.appendChild(dot);
+      row.appendChild(icon);
       row.appendChild(name);
       row.appendChild(spentEl);
       row.appendChild(closeBtn);
