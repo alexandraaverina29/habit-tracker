@@ -251,7 +251,7 @@ body {
   color: var(--text-muted);
 }
 
-.cat-delete {
+.cat-close {
   flex: 0 0 auto;
   width: 24px;
   height: 24px;
@@ -261,18 +261,14 @@ body {
   font-size: 16px;
   line-height: 1;
   border-radius: 50%;
-  opacity: 0;
+  opacity: 0.6;
   cursor: pointer;
   transition: opacity 0.15s ease;
 }
 
-.category-item:hover .cat-delete {
-  opacity: 0.5;
-}
-
-.cat-delete:hover,
-.cat-delete:active {
-  opacity: 1 !important;
+.cat-close:hover,
+.cat-close:active {
+  opacity: 1;
   background: rgba(0, 0, 0, 0.06);
 }
 

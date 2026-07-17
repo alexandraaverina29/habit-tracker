@@ -141,14 +141,6 @@
     render();
   }
 
-  function deleteCategory(id) {
-    state.categories = state.categories.filter(function (c) {
-      return c.id !== id;
-    });
-    saveData();
-    render();
-  }
-
   function formatDateLabel() {
     var d = new Date();
     return d.getDate() + " " + MONTHS_GEN[d.getMonth()];
@@ -260,20 +252,16 @@
       spentEl.className = "cat-spent" + (cat.id === lastAddedCategoryId ? " anim-pop" : "");
       spentEl.textContent = amt > 0 ? formatMoney(amt) : "";
 
-      var del = document.createElement("button");
-      del.className = "cat-delete";
-      del.type = "button";
-      del.setAttribute("aria-label", "Удалить категорию");
-      del.textContent = "×";
-      del.addEventListener("click", function (e) {
-        e.stopPropagation();
-        deleteCategory(cat.id);
-      });
+      var closeBtn = document.createElement("button");
+      closeBtn.className = "cat-close hidden";
+      closeBtn.type = "button";
+      closeBtn.setAttribute("aria-label", "Закрыть");
+      closeBtn.textContent = "×";
 
       row.appendChild(dot);
       row.appendChild(name);
       row.appendChild(spentEl);
-      row.appendChild(del);
+      row.appendChild(closeBtn);
 
       var form = document.createElement("form");
       form.className = "cat-expense-form hidden";
@@ -294,15 +282,34 @@
       form.appendChild(input);
       form.appendChild(submitBtn);
 
-      row.addEventListener("click", function () {
-        var isHidden = form.classList.contains("hidden");
+      function closeForm() {
+        form.classList.add("hidden");
+        closeBtn.classList.add("hidden");
+      }
+
+      function openForm() {
         listEl.querySelectorAll(".cat-expense-form").forEach(function (f) {
           f.classList.add("hidden");
         });
-        if (isHidden) {
-          form.classList.remove("hidden");
-          input.focus();
+        listEl.querySelectorAll(".cat-close").forEach(function (b) {
+          b.classList.add("hidden");
+        });
+        form.classList.remove("hidden");
+        closeBtn.classList.remove("hidden");
+        input.focus();
+      }
+
+      row.addEventListener("click", function () {
+        if (form.classList.contains("hidden")) {
+          openForm();
+        } else {
+          closeForm();
         }
+      });
+
+      closeBtn.addEventListener("click", function (e) {
+        e.stopPropagation();
+        closeForm();
       });
 
       form.addEventListener("click", function (e) {
