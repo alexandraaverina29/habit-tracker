@@ -230,6 +230,48 @@
     return streak;
   }
 
+  function wasYesterdayOverBudget() {
+    if (!state.budgetSetDate) return false;
+    var yesterday = shiftDate(todayKey(), -1);
+    if (yesterday < state.budgetSetDate) return false;
+    var eff = effectiveBudget(yesterday);
+    var spent = dayTotal(yesterday);
+    return spent > eff;
+  }
+
+  var FIREWORKS_SVG =
+    '<svg class="streak-icon" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">' +
+    '<g stroke-width="1.6" stroke-linecap="round">' +
+    '<line x1="12" y1="12" x2="12" y2="3" stroke="#e0473d"/>' +
+    '<line x1="12" y1="12" x2="19" y2="6" stroke="#e8b400"/>' +
+    '<line x1="12" y1="12" x2="21" y2="12" stroke="#4f8cf7"/>' +
+    '<line x1="12" y1="12" x2="19" y2="18" stroke="#22a559"/>' +
+    '<line x1="12" y1="12" x2="12" y2="21" stroke="#e0473d"/>' +
+    '<line x1="12" y1="12" x2="5" y2="18" stroke="#e8b400"/>' +
+    '<line x1="12" y1="12" x2="3" y2="12" stroke="#4f8cf7"/>' +
+    '<line x1="12" y1="12" x2="5" y2="6" stroke="#22a559"/>' +
+    '</g>' +
+    '<circle cx="12" cy="3" r="1" fill="#e0473d"/>' +
+    '<circle cx="19" cy="6" r="1" fill="#e8b400"/>' +
+    '<circle cx="21" cy="12" r="1" fill="#4f8cf7"/>' +
+    '<circle cx="19" cy="18" r="1" fill="#22a559"/>' +
+    '<circle cx="12" cy="21" r="1" fill="#e0473d"/>' +
+    '<circle cx="5" cy="18" r="1" fill="#e8b400"/>' +
+    '<circle cx="3" cy="12" r="1" fill="#4f8cf7"/>' +
+    '<circle cx="5" cy="6" r="1" fill="#22a559"/>' +
+    '</svg>';
+
+  var WAITING_SVG =
+    '<svg class="streak-icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">' +
+    '<ellipse cx="6" cy="17" rx="2" ry="3" fill="#a9a49a"/>' +
+    '<ellipse cx="18" cy="17" rx="2" ry="3" fill="#a9a49a"/>' +
+    '<ellipse cx="12" cy="15" rx="9" ry="7" fill="#b7b3ab"/>' +
+    '<ellipse cx="12" cy="8" rx="6" ry="5.5" fill="#c7c3ba"/>' +
+    '<circle cx="9.5" cy="8" r="1" fill="#3a3a38"/>' +
+    '<circle cx="14.5" cy="8" r="1" fill="#3a3a38"/>' +
+    '<path d="M10 11.2 Q12 12.4 14 11.2" stroke="#3a3a38" stroke-width="0.8" fill="none" stroke-linecap="round"/>' +
+    '</svg>';
+
   function pluralDays(n) {
     var mod10 = n % 10;
     var mod100 = n % 100;
@@ -276,9 +318,14 @@
       nameForm.classList.add("hidden");
 
       var streak = budgetStreak();
+      streakEl.classList.remove("streak-waiting");
       if (streak > 0) {
-        var emoji = streak <= 5 ? "👍" : streak <= 10 ? "🔥" : "🎆";
-        streakEl.textContent = emoji + " " + streak + " " + pluralDays(streak) + " подряд в бюджете";
+        var icon = streak <= 5 ? "👍" : streak <= 10 ? "🔥" : FIREWORKS_SVG;
+        streakEl.innerHTML = icon + " " + streak + " " + pluralDays(streak) + " подряд в бюджете";
+        streakEl.classList.remove("hidden");
+      } else if (wasYesterdayOverBudget()) {
+        streakEl.innerHTML = WAITING_SVG + " 0 " + pluralDays(0) + " без перерасхода";
+        streakEl.classList.add("streak-waiting");
         streakEl.classList.remove("hidden");
       } else {
         streakEl.classList.add("hidden");

@@ -68,6 +68,15 @@ body {
   margin-bottom: 8px;
 }
 
+.streak-icon {
+  vertical-align: -3px;
+  margin-right: 1px;
+}
+
+.streak-text.streak-waiting {
+  color: var(--text-muted);
+}
+
 .edit-name-btn {
   border: none;
   background: transparent;
